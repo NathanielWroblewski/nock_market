@@ -14,7 +14,7 @@ module.exports.addUser = addUser;
 function addUser(username, password, callback) {
   var instance = new MyUser();
   instance.username = username;
-  instance.password = password;
+  instance.password = password; // unencrypted
   instance.save(function (err) {
     if (err) {
       callback(err);
