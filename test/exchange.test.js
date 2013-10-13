@@ -1,7 +1,8 @@
 'use strict';
 
 var assert = require('assert')
-  , should = require('should');
+  , should = require('should')
+  , exchange = require('../lib/exchange');
 
 var exchangeData = {};
 
