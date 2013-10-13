@@ -9,6 +9,10 @@ The Nock Market is a real-time stock market built in [node](http://nodejs.org/).
   * [Socket.IO](http://socket.io/) for persistant communication/connection
   * [Backbone](http://backbonejs.org/) for client-side MVC
 
+Screen Shot
+---
+![Stock Chart](https://raw.github.com/NathanielWroblewski/nock_market/master/public/images/screen_shot.png)
+
 References
 ---
 
