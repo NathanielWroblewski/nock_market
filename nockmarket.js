@@ -3,6 +3,7 @@
 var exchangeData = {}
   , exch = require('./lib/exchange')
   , nocklib = require('./lib/nocklib')
+  , nockroutes = require('./routes/nockroutes.js')
   , db = require('./lib/db')
   , timeFloor = 500
   , timeRange = 1000
@@ -10,7 +11,7 @@ var exchangeData = {}
 
 function submitRandomOrder() {
   var ord = nocklib.generateRandomOrder (exchangeData);
-  console.log('order', ord);
+  // console.log('order', ord);
   if (ord.type == exch.BUY)
     exchangeData = exch.buy(ord.price, ord.volume, exchangeData);
   else
@@ -32,13 +33,16 @@ function submitRandomOrder() {
   function pauseThenTrade() {
     var pause = Math.floor(Math.random() * timeRange) + timeFloor;
     setTimeout(submitRandomOrder, pause);
-    console.log(exch.getDisplay(exchangeData));
+    // console.log(exch.getDisplay(exchangeData));
   }
 }
 
 var app = express.createServer();
 
 app.configure(function() {
+  app.use(express.bodyParser());
+  app.use(express.cookieParser());
+  app.use(express.session({secret: 'secretpasswordforsessions'}));
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.static(__dirname + '/public'));
@@ -48,9 +52,10 @@ app.set('view options', {
   layout: false
 })
 
-app.get('/', function(req, res) {
-  res.render('chart');
-});
+app.get('/', nockroutes.getIndex);
+app.get('/api/user/:username', nockroutes.getUser);
+app.post('/signup', nockroutes.signup);
+app.post('/login', nockroutes.login);
 
 app.get('/api/trades', function(req, res) {
   db.find('transactions'
